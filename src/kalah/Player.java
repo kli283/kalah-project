@@ -4,15 +4,18 @@ import java.util.ArrayList;
 
 public class Player {
     private ArrayList<House> houses;
-    private House endHouse;
     private GameBoard gameBoard = new GameBoard();
+    private Store playerStore ;
+    private int playerId;
 
-    public Player() {
+
+    public Player(int id) {
+        playerId = id;
         houses = new ArrayList<>();
         for (int i=0; i<gameBoard.getInitHouses(); i++) {
-            houses.add(new House(gameBoard.getInitHouses()));
+            houses.add(new House(gameBoard.getInitSeeds()));
         }
-        endHouse = new House(gameBoard.getInitHouses());
+        playerStore = new Store();
     }
 
     public int getPlayerHouses() {
@@ -23,11 +26,8 @@ public class Player {
         return houses;
     }
 
-    public House getEndHouse() {
-        return endHouse;
+    public int getScore() {
+        return playerStore.getStoreVal();
     }
 
-    public int getScore() {
-        return endHouse.getSeeds().size();
-    }
 }

@@ -13,7 +13,7 @@ public class Kalah {
 	}
 	public void play(IO io) {
 		// Replace what's below with your implementation
-		new Controller().startMove(io);
-
+//		new Controller().moveInput(io);
+		new Manager().init(io);
 	}
 }
