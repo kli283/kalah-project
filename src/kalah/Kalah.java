@@ -13,8 +13,7 @@ public class Kalah {
 	}
 	public void play(IO io) {
 		// Replace what's below with your implementation
-		Player p1 = new Player();
-		Player p2 = new Player();
-		new UI().drawBoard(io, p1, p2);
+		new Controller().startMove(io);
+
 	}
 }

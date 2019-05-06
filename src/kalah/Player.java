@@ -5,13 +5,18 @@ import java.util.ArrayList;
 public class Player {
     private ArrayList<House> houses;
     private House endHouse;
+    private GameBoard gameBoard = new GameBoard();
 
     public Player() {
         houses = new ArrayList<>();
-        for (int i=0; i<6; i++) {
-            houses.add(new House(4));
+        for (int i=0; i<gameBoard.getInitHouses(); i++) {
+            houses.add(new House(gameBoard.getInitHouses()));
         }
-        endHouse = new House(0);
+        endHouse = new House(gameBoard.getInitHouses());
+    }
+
+    public int getPlayerHouses() {
+        return gameBoard.getInitHouses();
     }
 
     public ArrayList<House> getHouses() {
