@@ -3,16 +3,21 @@ package kalah;
 import java.util.ArrayList;
 
 public class House {
-    private ArrayList<Seed> seeds;
+    private int seeds;
 
     public House(int initialSeeds) {
-        seeds = new ArrayList<>();
-        for (int i=0; i<initialSeeds; i++) {
-            seeds.add(new Seed());
-        }
+        seeds = initialSeeds;
     }
 
-    public ArrayList<Seed> getSeeds() {
+    public int getSeeds() {
         return seeds;
+    }
+
+    public int incrementSeeds() {
+        return seeds++;
+    }
+
+    public int removeSeeds() {
+        return seeds = 0;
     }
 }

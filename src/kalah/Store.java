@@ -7,7 +7,7 @@ public class Store {
         return storeVal;
     }
 
-    public int increaseStore(int numPoints) {
-        return storeVal + numPoints;
+    public void incrementStore() {
+        storeVal++;
     }
 }

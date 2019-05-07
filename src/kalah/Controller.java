@@ -5,17 +5,24 @@ import com.qualitascorpus.testsupport.TextIOAssertionException;
 
 public class Controller {
 
-    private int playerNum = 1;
 
-
-    public void gameRun(Manager manager) {
+    public void gameRun(IO io, Manager manager) {
+        GameLogic gameLogic = new GameLogic();
+        UI printer = manager.getGameUI();
+        int validMove = 1;
         while (!gameEnd(manager)){
-            int input = moveInput(manager.getGameIO(), manager);
+            Integer input = moveInput(manager.getGameIO(), manager);
             //player quits
-            if (input == -1) {
+            if (input.equals(-1)) {
+                printer.gameOver(io);
+                printer.drawBoard(io, manager);
                 break;
-            } else {
-
+            }
+            validMove = gameLogic.playerMove(manager, input);
+            if (validMove == 1) {
+                manager.switchPlayer();
+            } else if (validMove == 0) {
+                printer.emptyHouse(io);
             }
         }
 
@@ -26,7 +33,7 @@ public class Controller {
         int seedCount = 0;
         //checking if there are any seeds in the all houses
         for (House house : manager.getP1().getHouses()) {
-            seedCount += house.getSeeds().size();
+            seedCount += house.getSeeds();
         }
         if (seedCount == 0) {
             return true;
@@ -36,29 +43,32 @@ public class Controller {
 
 
     public int moveInput(IO io, Manager manager) {
-        int input;
-        int maxHouses = manager.getP1().getPlayerHouses();
-        manager.getGameUI().drawBoard(io, manager.getP1(), manager.getP2());
+        Integer input;
+        int cancelResult = -1;
+        int invalidMove = -2;
+        int maxHouses = manager.getCurrentPlayer().getPlayerHouses();
+        manager.getGameUI().drawBoard(io, manager);
 
-        String playerPrompt = "Player " + playerNum + "'s turn - Specify house number or 'q' to quit: ";
+        int playerNum = manager.getCurrentPlayer().getPlayerId();
+
+        String playerPrompt = "Player P" + playerNum + "'s turn - Specify house number or 'q' to quit: ";
         String quitString = "q";
 
-        int quitValue = -1;
+//        io.println(playerPrompt);
         try {
             //Using readInteger because it accepts a range of int with one accepted string
-            input = io.readInteger(playerPrompt, 0, maxHouses, quitValue, quitString);
-        } catch (TextIOAssertionException e){
-            return quitValue;
-        }
 
-        if ((input > maxHouses) || (input < 0)) {
-            return quitValue;
+            input = io.readInteger(playerPrompt, 0, maxHouses, cancelResult, quitString);
+        } catch (TextIOAssertionException e){
+            return cancelResult;
+        }
+        if (input.equals(cancelResult)){
+            return cancelResult;
+        } else if ((input > maxHouses) || (input < 0)) {
+            return invalidMove;
         } else {
+            // valid move
             return input;
         }
-
-
-
-
     }
 }
