@@ -27,8 +27,10 @@ public class GameLogic {
                     System.out.println(currentPlayer.getHouse(i).getSeeds());
 
                     if (currentPlayer.getHouse(i).getSeeds() == 1) {
-//                        System.out.println("ATTEMPTING CAPTURE");
-                        if (otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
+                        System.out.println("ATTEMPTING CAPTURE");
+                        if (!otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
+
+                            System.out.println("ALMOST CAPTURE");
                             capture(currentPlayer, otherPlayer, i + 1);
                         }
                     }
@@ -49,6 +51,14 @@ public class GameLogic {
                 tempOtherPlayer.getHouse(i).incrementSeeds();
                 seedAmount--;
                 if (seedAmount == 0) {
+                    if (currentPlayer.getHouse(i).getSeeds() == 1) {
+                        System.out.println("ATTEMPTING CAPTURE");
+                        if (!otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
+
+                            System.out.println("ALMOST CAPTURE");
+                            capture(currentPlayer, otherPlayer, i + 1);
+                        }
+                    }
                     return 1;
                 }
             }
@@ -67,7 +77,7 @@ public class GameLogic {
 
         int oppositeIndex = gameBoard.getInitHouses() - index;
         int oppositeSeeds = otherPlayer.getHouse(oppositeIndex).getSeeds();
-        if (otherPlayer.getHouse(oppositeIndex).isEmpty()) {
+        if (otherPlayer.getHouse(oppositeIndex).getSeeds() == 0) {
             System.out.println("FAIL EMPTY");
         } else{
             otherPlayer.getHouse(oppositeIndex).removeSeeds();
