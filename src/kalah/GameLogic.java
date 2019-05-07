@@ -1,49 +1,79 @@
 package kalah;
 
 public class GameLogic {
+    GameBoard gameBoard = new GameBoard();
 
     public int playerMove(Manager manager, int inputHouse) {
-        inputHouse--;
-        Player currentPlayer = manager.getCurrentPlayer();
-        if (currentPlayer.isTop()) {
-            inputHouse = 5 - inputHouse;
-        }
 
-        int seedAmount = currentPlayer.getHouse(inputHouse).getSeeds();
+        Player currentPlayer = manager.getCurrentPlayer();
+        Player otherPlayer = manager.otherPlayer();
+
+
+        int seedAmount = currentPlayer.getHouse(inputHouse -1).getSeeds();
+
         if (seedAmount == 0) {
             //empty house
             return 0;
         }
-        currentPlayer.getHouse(inputHouse).removeSeeds();
+
+        currentPlayer.getHouse(inputHouse - 1).removeSeeds();
+
+        for (int i = inputHouse; i < gameBoard.getInitHouses(); i++) {
+            if (seedAmount > 0) {
+                currentPlayer.getHouse(i).incrementSeeds();
+                seedAmount--;
+//                System.out.println("BLAAAHHHH");
+                if (seedAmount == 0){
+                    System.out.println(currentPlayer.getHouse(i).getSeeds());
+
+                    if (currentPlayer.getHouse(i).getSeeds() == 1) {
+//                        System.out.println("ATTEMPTING CAPTURE");
+                        if (otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
+                            capture(currentPlayer, otherPlayer, i + 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        Player tempOtherPlayer = otherPlayer;
         while (seedAmount > 0) {
-            if (!currentPlayer.isTop()){
-                inputHouse++;
+            if (tempOtherPlayer == otherPlayer) {
+                currentPlayer.addScore();
+                seedAmount--;
+                if (seedAmount == 0) {
+                    return 2;
+                }
+            }
+            for (int i = 0; i < gameBoard.getInitHouses(); i++) {
+                tempOtherPlayer.getHouse(i).incrementSeeds();
+                seedAmount--;
+                if (seedAmount == 0) {
+                    return 1;
+                }
+            }
+
+            if (tempOtherPlayer == currentPlayer){
+                tempOtherPlayer = otherPlayer;
             } else {
-                inputHouse--;
-            }
-
-            if (inputHouse == -1) {
-                currentPlayer.addScore();
-            }
-            else if (inputHouse < -1) {
-                manager.otherPlayer().getHouse(-inputHouse - 2).incrementSeeds();
-            }
-            else if (inputHouse == 6) {
-                currentPlayer.addScore();
-            }
-            else if (inputHouse > 6) {
-                manager.otherPlayer().getHouse(-inputHouse + 12).incrementSeeds();
-            }
-            else {
-                currentPlayer.getHouse(inputHouse).incrementSeeds();
-            }
-
-            seedAmount--;
-
-            if ((seedAmount == 0)&&((inputHouse == -1)||(inputHouse == 6))) {
-                return 2;
+                tempOtherPlayer = currentPlayer;
             }
         }
         return 1;
+    }
+
+    //Function for capturing seeds
+    public void capture(Player currentPlayer, Player otherPlayer, int index) {
+
+        int oppositeIndex = gameBoard.getInitHouses() - index;
+        int oppositeSeeds = otherPlayer.getHouse(oppositeIndex).getSeeds();
+        if (otherPlayer.getHouse(oppositeIndex).isEmpty()) {
+            System.out.println("FAIL EMPTY");
+        } else{
+            otherPlayer.getHouse(oppositeIndex).removeSeeds();
+            currentPlayer.addScore();
+            currentPlayer.captureSeeds(oppositeSeeds);
+            currentPlayer.getHouse(index-1).removeSeeds();
+        }
     }
 }

@@ -10,6 +10,7 @@ public class Controller {
         GameLogic gameLogic = new GameLogic();
         UI printer = manager.getGameUI();
         int validMove = 1;
+
         while (!gameEnd(manager)){
             Integer input = moveInput(manager.getGameIO(), manager);
             //player quits
@@ -25,7 +26,9 @@ public class Controller {
                 printer.emptyHouse(io);
             }
         }
-
+//        printer.gameOver(io);
+//        printer.drawBoard(io, manager);
+//        printer.printFinal(io, manager);
 
     }
 

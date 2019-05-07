@@ -41,11 +41,13 @@ public class Player {
         playerStore.incrementStore();
     }
 
+    public void captureSeeds(int seedAmount) {
+        playerStore.capture(seedAmount);
+
+    }
+
     public int getPlayerId() {
         return playerId;
     }
 
-    public boolean isTop() {
-        return isTop;
-    }
 }

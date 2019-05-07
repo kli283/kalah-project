@@ -10,4 +10,8 @@ public class Store {
     public void incrementStore() {
         storeVal++;
     }
+
+    public void capture(int seedAmount) {
+        storeVal += seedAmount;
+    }
 }
