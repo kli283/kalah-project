@@ -32,6 +32,10 @@ public class UI {
 //        io.println(String.format("Player %d's turn - Specify house number or 'q' to quit: ", ));
     }
 
+    public void gameOver() {
+
+    }
+
 
 //    void run
 }
