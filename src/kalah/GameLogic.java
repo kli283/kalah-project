@@ -31,7 +31,7 @@ public class GameLogic {
                         if (!otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
 
                             System.out.println("ALMOST CAPTURE");
-                            capture(currentPlayer, otherPlayer, i + 1);
+                            capture(currentPlayer, otherPlayer, i);
                         }
                     }
                 }
@@ -52,11 +52,14 @@ public class GameLogic {
                 seedAmount--;
                 if (seedAmount == 0) {
                     if (currentPlayer.getHouse(i).getSeeds() == 1) {
-                        System.out.println("ATTEMPTING CAPTURE");
-                        if (!otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
+                        if (tempOtherPlayer == currentPlayer) {
+                            System.out.println("ATTEMPTING CAPTURE");
+                            System.out.println(i);
+                            if (!otherPlayer.getHouse(gameBoard.getInitHouses() - i).isEmpty()) {
 
-                            System.out.println("ALMOST CAPTURE");
-                            capture(currentPlayer, otherPlayer, i + 1);
+                                System.out.println("ALMOST CAPTURE");
+                                capture(currentPlayer, otherPlayer, i);
+                            }
                         }
                     }
                     return 1;
@@ -74,8 +77,8 @@ public class GameLogic {
 
     //Function for capturing seeds
     public void capture(Player currentPlayer, Player otherPlayer, int index) {
-
-        int oppositeIndex = gameBoard.getInitHouses() - index;
+        System.out.println(index);
+        int oppositeIndex = gameBoard.getInitHouses() - index - 1;
         int oppositeSeeds = otherPlayer.getHouse(oppositeIndex).getSeeds();
         if (otherPlayer.getHouse(oppositeIndex).getSeeds() == 0) {
             System.out.println("FAIL EMPTY");
@@ -83,7 +86,7 @@ public class GameLogic {
             otherPlayer.getHouse(oppositeIndex).removeSeeds();
             currentPlayer.addScore();
             currentPlayer.captureSeeds(oppositeSeeds);
-            currentPlayer.getHouse(index-1).removeSeeds();
+            currentPlayer.getHouse(index).removeSeeds();
         }
     }
 }
